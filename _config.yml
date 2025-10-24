@@ -6,3 +6,59 @@ url: https://just-the-docs.github.io
 
 aux_links:
   Template Repository: https://github.com/just-the-docs/just-the-docs-template
+
+# Enable LaTeX via MathJax
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
+
+# Sidebar navigation (all pointing to anchors on index.md)
+nav_order: 1
+nav:
+  - title: Abstract
+    url: /#abstract
+  - title: 1. Motivation and Thesis
+    url: /#1-motivation-and-thesis
+  - title: 2. Historical Context
+    url: /#2-historical-context-condensed
+  - title: 3. Core Concepts
+    url: /#3-core-concepts-and-notation
+  - title: 4. Architecture
+    url: /#4-architecture-humanoid-first
+  - title: 5. Tokenisation Stack
+    url: /#5-tokenisation-stack-with-data-as-rwa
+  - title: 6. Data Ownership & Rights
+    url: /#6-data-ownership--rights-ndata-r
+  - title: 7. Learning from Lived Experience
+    url: /#7-learning-from-lived-experience
+  - title: 8. Safety, Correctness, Privacy
+    url: /#8-safety-correctness-privacy
+  - title: 9. Market Clearing & Control
+    url: /#9-market-clearing--control
+  - title: 10. Data as a Real-World Asset
+    url: /#10-data-as-a-real-world-asset-valuation--nav
+  - title: 11. Token Supply & Emissions
+    url: /#11-token-supply--emissions-token
+  - title: 12. Revenue Model
+    url: /#12-revenue-model-protocol-operators-data-owners
+  - title: 13. Environmental Emissions
+    url: /#13-environmental-emissions-energyco₂e
+  - title: 14. Comparative Analysis
+    url: /#14-comparative-analysis-bittensor-style-networks-and-others
+  - title: 15. Governance, Policy, Assurance
+    url: /#15-governance-policy-and-assurance
+  - title: 16. Roadmap
+    url: /#16-roadmap-humanoid--and-data-aware
+  - title: 17. Risks, Limitations
+    url: /#17-risks-limitations-and-open-questions
+  - title: 18. Conclusion
+    url: /#18-conclusion
+  - title: Appendix A
+    url: /#appendix-a--key-equations
+  - title: Appendix B
+    url: /#appendix-b--worked-scenarios-brief
+  - title: Appendix C
+    url: /#appendix-c--governance-surfaces-suggested-defaults
+  - title: Appendix D
+    url: /#appendix-d--practical-integration-notes
