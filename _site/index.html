@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NeuroMesh Whitepaper</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        },
+        options: {
+          renderActions: {
+            addMenu: []
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <a class="site-title" href="/">Documentation Site</a>
+        <nav id="toc" class="toc">
+          <p class="toc-empty">This page has no headings yet.</p>
+        </nav>
+      </aside>
+      <main class="content">
+        <article id="doc-content">
+          <h1 id="neuromesh-the-humanoid-intelligence-layer-forming-a-decentralised-superbrain">NeuroMesh: The Humanoid Intelligence Layer Forming a Decentralised Superbrain</h1>
+
+<p><em>RWA × AI × Robotics × Compute × Data — Version 2025 — Research concept paper (not an investment solicitation)</em></p>
+
+<hr />
+
+<h2 id="abstract">Abstract</h2>
+
+<p>NeuroMesh defines a humanoid-first intelligence layer on Solana that any robot can install to become software-defined, safety-bounded, and market-connected. Each robot runs agentic cognition locally (on-robot CPU/NPU/GPU), generating verifiable “thoughts” and “actions” recorded as Composite Thought/Action Vectors (CTV/A) with lineage, evaluator scores, and royalty rules. All inference and learning compute is executed <strong>on the robot</strong>; tokenised compute credits (<strong>cCOMP</strong>) are minted solely from <strong>attested on-robot cycles</strong>. The economy further tokenises <strong>embodied minutes</strong> (<strong>nROBOT</strong>), <strong>energy windows</strong> (<strong>nENERGY</strong>), <strong>durable storage</strong> (<strong>nSTOR</strong>), and—critically—<strong>data as a Real-World Asset</strong> through <strong>per-robot data rights</strong> (<strong>nDATA-R</strong>), whose ownership is anchored by a <strong>Data Ownership Certificate (DOC)</strong> and a <strong>Perception Lineage ID (PLID)</strong>. Correctness is enforced by Proof-of-Inference (PoI) and optional zkML; embodied safety by Control Barrier Certificates (CBC) and Proof-of-Action (PoA). A model-predictive controller (MPC) tunes verification overhead, queueing, and safety risk while dual-descent pricing clears resources. As robots perceive more of the world, data, skills, and incentives reinforce each other so the network behaves like a single <strong>decentralised superbrain</strong>: an organism whose intelligence density compounds with lived experience.</p>
+
+<hr />
+
+<h2 id="1-motivation-and-thesis">1. Motivation and Thesis</h2>
+
+<ol>
+  <li><strong>Embodiment has arrived.</strong> Useful autonomy lives inside tight latency budgets (≈10–800 ms), privacy regimes, human-aware safety envelopes, and energy constraints.</li>
+  <li><strong>Intelligence must be priced under constraints.</strong> Capability is not just model quality; it is quality <strong>subject to</strong> safety, latency, energy, and rights.</li>
+  <li><strong>Ownership matters.</strong> “He who owns the data owns the future.” Ownership must be cryptographically provable, economically valued, and enforceable at the edge.</li>
+  <li><strong>Therefore:</strong> put cognition on the robot; expose rights, safety and verification as first-class; tokenise compute, capability and <strong>data</strong>; and settle on a fast, low-cost chain.</li>
+</ol>
+
+<hr />
+
+<h2 id="2-historical-context-condensed">2. Historical Context (condensed)</h2>
+
+<ul>
+  <li><strong>Time-sharing → Cloud.</strong> Centralised compute with generous latency tolerances.</li>
+  <li><strong>Deep Learning Era.</strong> Disembodied models dominated, largely off-device.</li>
+  <li><strong>Embodiment Era (now).</strong> Sensorimotor context, human interaction, and jurisdictional privacy shift learning on-device; verification and safety become economic primitives.</li>
+</ul>
+
+<hr />
+
+<h2 id="3-core-concepts-and-notation">3. Core Concepts and Notation</h2>
+
+<ul>
+  <li><strong>Agents &amp; robots.</strong> Each wallet can host an agent; each robot runs NeuroOS-H (humanoid OS) and presents <strong>on-robot</strong> compute, skills, safety, and data vaults.</li>
+  <li><strong>CTV/A.</strong> A verifiable artefact containing inputs, outputs, evaluators’ notes, PoI/PoA receipts, lineage, and royalty curves.</li>
+  <li><strong>Tokens.</strong>
+    <ul>
+      <li><strong>$NEURO$:</strong> base fees, staking, governance.</li>
+      <li><strong>cCOMP:</strong> attested <strong>on-robot</strong> compute credits; burn-to-use.</li>
+      <li><strong>nROBOT:</strong> embodied minutes by safety class.</li>
+      <li><strong>nENERGY:</strong> time-of-use/PPAs anchoring carbon/price.</li>
+      <li><strong>nSTOR:</strong> durable storage with region/SLA.</li>
+      <li><strong>nDATA:</strong> licensed catalogue datasets (third-party).</li>
+      <li><strong>nDATA-R:</strong> <strong>per-robot data rights</strong> (the RWA of experience).</li>
+      <li><strong>iCTVs:</strong> rights to CTV/A (reuse + ALR-scoped learning royalties).</li>
+    </ul>
+  </li>
+  <li><strong>Intelligence density.</strong>
+\(I = \log N \cdot \bar{\beta} \cdot C\)
+where $N$ is active robots/agents, $\bar{\beta}$ useful message rate, and $C$ coherence (fraction of high-quality CTV/A).</li>
+  <li><strong>Verification overhead.</strong>
+\(\psi \in [0,1), \qquad \chi = \frac{\psi}{1-\psi}\)</li>
+  <li><strong>PoI tail bound.</strong>
+\(P_{\mathrm{FA}} \approx \exp\!\bigl(-2q(1/2-\theta)^2\bigr)
+\quad \Rightarrow \quad
+q \ge \frac{\ln(1/\varepsilon)}{2(1/2-\theta)^2}\)</li>
+  <li><strong>Safety.</strong> $ P_{\mathrm{unsafe}} \le \varepsilon_s $; CBC constraints embedded in control.</li>
+</ul>
+
+<hr />
+
+<h2 id="4-architecture-humanoid-first">4. Architecture (Humanoid-First)</h2>
+
+<h3 id="41-neuroos-h">4.1 NeuroOS-H</h3>
+
+<ul>
+  <li><strong>Control plane:</strong> torque/impedance controllers at 500–2,000 Hz; reflex arcs ≤20 ms; servo jitter ≤2 ms.</li>
+  <li><strong>Perception:</strong> RGB-D, event cameras, microphones, tactile skins, force–torque, IMU, encoders.</li>
+  <li><strong>Policy server:</strong> option library $ {\pi_{\mathrm{nav}}, \pi_{\mathrm{grasp}}, \pi_{\mathrm{tool}}, \pi_{\mathrm{social}}} $ with confidence scores, termination sets, and ALR hooks.</li>
+  <li><strong>Safety supervisor:</strong> CBC, geofences, human-aware envelopes; teleoperation fall-back when confidence $&lt; \tau$.</li>
+  <li><strong>Secure logger:</strong> TPM/TEE-attested, hash-chained sensorimotor logs and actuation streams.</li>
+  <li><strong>Mesh daemon:</strong> discovery, pricing, escrow, receipts; PoI/PoA clients.</li>
+</ul>
+
+<h3 id="42-sense--think--act-market-primitive">4.2 Sense → Think → Act (market primitive)</h3>
+
+<p>A task $ \tau=(g,d,\kappa,\Pi) $ produces:</p>
+
+<ul>
+  <li><strong>Sense</strong> $ z=\phi_{\mathrm{sense}}(d) $ (multimodal μTokens),</li>
+  <li><strong>Think</strong> $ a^*=\arg\max_a \mathbb{E}[R \mid z,g,\kappa,\Pi] $ under CBC,</li>
+  <li><strong>Act</strong> $ u(t) $ with PoA receipts,</li>
+  <li><strong>Learn</strong> $ \Delta K $ (self-supervised objectives, ALR budgets).
+Artefacts settle as <strong>CTV/A</strong>; <strong>all compute</strong> runs <strong>on the robot</strong>.</li>
+</ul>
+
+<hr />
+
+<h2 id="5-tokenisation-stack-with-data-as-rwa">5. Tokenisation Stack (with Data as RWA)</h2>
+
+<h3 id="51-instruments">5.1 Instruments</h3>
+
+<ul>
+  <li><strong>$NEURO$:</strong> Fees, staking, governance.</li>
+  <li><strong>cCOMP (on-robot):</strong>
+\(\Delta \mathrm{cCOMP} = \kappa_{\mathrm{attest}} \cdot r_{\mathrm{clk}} \cdot \Delta t\)
+where $\kappa_{\mathrm{attest}} \in {0,1}$ proves OS/accelerator state and SLO adherence; burn-to-use.</li>
+  <li><strong>nROBOT:</strong> Minutes by safety class and attestation.</li>
+  <li><strong>nENERGY:</strong> Energy windows/PPAs; metering oracle; region.</li>
+  <li><strong>nSTOR:</strong> Storage capacity with durability and locality.</li>
+  <li><strong>nDATA (catalogue):</strong> Licenced datasets with ALR scope.</li>
+  <li><strong>nDATA-R (per-robot data rights):</strong> <strong>Tokenised ownership of a robot’s own captured experience</strong>, bound to:
+    <ul>
+      <li><strong>DOC (Data Ownership Certificate).</strong> Operator DID, robot DID, OS/accelerator attestation hash, time window, site, modality map, capture policy, PLID, signature.</li>
+      <li><strong>PLID (Perception Lineage ID).</strong> Merkle root over hashed, windowed perception logs, signed inside TEE.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="52-execution-bundle-and-placement">5.2 Execution bundle and placement</h3>
+
+<p>Execution bundle: {cCOMP_on-robot, iCTVs, nROBOT slice, optional nDATA/nDATA-R, optional nENERGY}.<br />
+Placement is <strong>on-robot</strong>; $L_{\mathrm{net}} \approx 0$ for inference; safety policies remain local.</p>
+
+<h3 id="53-solvency-and-issuance">5.3 Solvency and issuance</h3>
+
+<p>For each tranche $r$:</p>
+
+<p>\(\text{NAV}_r = PV(\text{cashflows}_r) - \text{liabilities}_r - \text{reserves}_r,\)
+\(\sum_r \text{issued}_r \cdot \text{unit\_value}_r \le \sum_r \text{NAV}_r \bigl(1-h_r\bigr).\)
+<strong>nDATA-R</strong> lots may be aggregated into tranches with similar modality mix, safety class, site category, and ALR defaults; NAV reflects <strong>expected licensing cash-flows</strong> (Section 10).</p>
+
+<hr />
+
+<h2 id="6-data-ownership--rights-ndata-r">6. Data Ownership &amp; Rights (nDATA-R)</h2>
+
+<h3 id="61-minting-flow">6.1 Minting flow</h3>
+
+<p>1) <strong>Capture:</strong> robot records sensorimotor streams into an encrypted local vault.<br />
+2) <strong>Attest:</strong> TEE signs OS/accelerator measurement; mesh daemon rotates windowed hashes → <strong>PLID</strong>.<br />
+3) <strong>Certify:</strong> generate <strong>DOC</strong> (ownership/conditions); hash the policy manifest (ALR defaults).<br />
+4) <strong>Mint:</strong> issue <strong>nDATA-R lot</strong> $(\mathrm{DOC}, \mathrm{PLID}, \mathrm{modality_mix}, \mathrm{ALR}_0, \mathrm{royalty_curve}, \mathrm{expiry})$.<br />
+5) <strong>List:</strong> optional listing on the data market with reserve/ask and usage restrictions.</p>
+
+<p><strong>Principle:</strong> <strong>raw data never leaves</strong> the vault; licences concern μTokens/statistics and <strong>explicit learning rights</strong>.</p>
+
+<h3 id="62-alr-agentic-learning-rights">6.2 ALR (Agentic Learning Rights)</h3>
+
+<p>ALR expresses purpose (e.g., “grasp stability”), forbids classes (e.g., face identification), and allocates privacy budgets $(\varepsilon,\delta)$. Composition bound:</p>
+
+<p>$$
+\varepsilon_{\mathrm{total}} \le \sqrt{2T \ln(1/\delta)}\,\bar{\varepsilon}</p>
+<ul>
+  <li>T\,\bar{\varepsilon}\,\bigl(e^{\bar{\varepsilon}}-1\bigr),
+$$
+with zk attestations proving budget spend and purpose compliance.</li>
+</ul>
+
+<h3 id="63-lineage-and-royalties">6.3 Lineage and royalties</h3>
+
+<p>Reused CTV/A and model deltas reference <strong>PLID</strong>; royalties stream back to <strong>nDATA-R</strong> owners using Shapley-style approximations:</p>
+
+<p>\(\mathrm{Royalty}(X) = \sum_i \phi_i(X) \cdot r_i(t), \qquad 
+\sum_i \phi_i(X) \approx 1.\)
+Royalty curves may decay (to encourage freshness) or step-up for high safety grade data.</p>
+
+<h3 id="64-anti-sybil-and-quality">6.4 Anti-sybil and quality</h3>
+
+<ul>
+  <li><strong>Per-robot DID + TEE evidence</strong> prevents cost-free identity splits.</li>
+  <li><strong>Diversity threshold</strong> (scene entropy, contact event variety) before minting a lot.</li>
+  <li><strong>Similarity hashing</strong> and spot-audits penalise near-duplicates.</li>
+</ul>
+
+<hr />
+
+<h2 id="7-learning-from-lived-experience">7. Learning from Lived Experience</h2>
+
+<h3 id="71-μtokens-and-multimodal-alignment">7.1 μTokens and multimodal alignment</h3>
+
+<ul>
+  <li><strong>Vision:</strong> masked autoencoding + contrastive alignment.</li>
+  <li><strong>Audio:</strong> self-supervised embeddings (speech/environment).</li>
+  <li><strong>Tactile/force:</strong> slip/contact patches with local dynamics.</li>
+  <li><strong>Proprioception:</strong> predictive trajectory codes.</li>
+</ul>
+
+<p>Alignment objective:</p>
+
+<p>\(\mathcal{L}_{\mathrm{align}} = -\mathbb{E}\left[\log \frac{\exp(\langle z_m, z_{m'} \rangle/\tau)}{\sum_j \exp(\langle z_m, z_j \rangle/\tau)} \right],\)
+with action-conditioned dynamics and skill distillation layered on.</p>
+
+<h3 id="72-growth-law-experience-driven">7.2 Growth law (experience-driven)</h3>
+
+<p>Let $ M_R(t) $ be cumulative <strong>licensable</strong> μTokens derived from <strong>nDATA-R</strong>:</p>
+
+<p>\(\bar{\beta}(t) \propto M_R(t)^\gamma,\qquad 
+M_R(t+\Delta) = M_R(t) + N(t)\, d \, \pi_{\mathrm{lic}},\)
+where $ d $ is daily μTokens/robot and $ \pi_{\mathrm{lic}} $ the licensable fraction. Then</p>
+
+<p>\(I(t) = \log N(t) \cdot M_R(t)^\gamma \cdot C(t).\)
+As evaluator ensembles improve and ALR-licensed coverage widens, $ C(t) \uparrow $, producing <strong>super-linear</strong> gains in effective capability.</p>
+
+<hr />
+
+<h2 id="8-safety-correctness-privacy">8. Safety, Correctness, Privacy</h2>
+
+<ul>
+  <li><strong>PoI correctness:</strong>
+\(P_{\mathrm{FA}} \le \varepsilon \quad \Rightarrow \quad q \ge \frac{\ln(1/\varepsilon)}{2(1/2-\theta)^2}.\)</li>
+  <li><strong>CBC safety:</strong> choose $ u $ to minimise $ |u-u_{\mathrm{nom}}|^2 $ subject to
+\(\frac{\partial h}{\partial x} \cdot (f+g u) + \alpha h(x) \ge 0\)
+alongside actuator/contact limits.</li>
+  <li><strong>PoA embodiment:</strong> Merkle-ised sensor/actuation traces, CBC certificates; committee sampling; penalties for rejected segments.</li>
+  <li><strong>Privacy:</strong> ALR + DP composition; zk attestations for budget use; <strong>raw frames</strong> remain local.</li>
+</ul>
+
+<hr />
+
+<h2 id="9-market-clearing--control">9. Market Clearing &amp; Control</h2>
+
+<h3 id="91-prices-and-control">9.1 Prices and control</h3>
+
+<p>Dual-descent:</p>
+
+<p>\(p_R(t{+}1)=\max\bigl(0,\,p_R+\eta_p[D_R-\mathcal{U}_R]\bigr),\qquad
+p_v(t{+}1)=\max\bigl(0,\,p_v+\eta_v[\psi-\psi^\*]\bigr).\)
+<strong>MPC (mesh):</strong> state $ y=[\rho_R,\rho_C,\rho_B,P_{\mathrm{FA}},\psi,\text{lat}] $; control $ u=[\psi,\lambda_{\mathrm{eff}},q,\theta,p_v,p_R] $; constraints $ \rho_k&lt;1 $, $ P_{\mathrm{FA}}\le \varepsilon $, $ L_{\mathrm{tot}}\le L^\star $.<br />
+<strong>MPC (fleet):</strong> include incident rate, battery, maintenance, nENERGY windows; require $ P_{\mathrm{unsafe}}\le \varepsilon_s $.</p>
+
+<h3 id="92-throughput">9.2 Throughput</h3>
+
+\[V_{\mathrm{emb}} \propto I \times \mathcal{U}_R \times (1 - P_{\mathrm{unsafe}}),\qquad 
+S = S_{\mathrm{comp},R} \bigl(1+\chi\bigr) + S_{\mathrm{body}},\quad \chi=\frac{\psi}{1-\psi}.\]
+
+<hr />
+
+<h2 id="10-data-as-a-real-world-asset-valuation--nav">10. Data as a Real-World Asset (valuation &amp; NAV)</h2>
+
+<h3 id="101-pricing-a-data-lot">10.1 Pricing a data lot</h3>
+
+<p>For lot $ D $ (nDATA-R), fair value:</p>
+
+<p>$$
+P(D) = \alpha \,\mathbb{E}[\Delta I(D)]</p>
+<ul>
+  <li>\beta \,\kappa_{\mathrm{cov}}(D)</li>
+  <li>\gamma \,\rho_{\mathrm{rare}}(D)</li>
+  <li>\lambda_{\mathrm{risk}}\, \mathcal{R}(D),
+$$
+where <strong>ΔI</strong> is marginal information gain across reference tasks, <strong>coverage</strong> measures diversity (scenes/materials/language), <strong>rarity</strong> measures scarcity of events, and <strong>risk</strong> captures privacy/clean-up.</li>
+</ul>
+
+<h3 id="102-nav-and-issuance-data-tranches">10.2 NAV and issuance (data tranches)</h3>
+
+<p>Group lots by modality mix and safety class.</p>
+
+<p>\(\text{NAV}_{\mathrm{nDATA\!-\!R}} = \sum_{D\in \text{tranche}} \mathrm{DCF}\big(P(D),\ \text{licence rate},\ \text{churn}\big) - \text{reserves}.\)
+Apply haircuts $ h_r $ for oracle variance, legal risk, and coverage volatility; cap issuance via $ \text{max_supply} = \text{NAV}(1-h_r)/\text{unit_value} $.</p>
+
+<h3 id="103-royalty-streams">10.3 Royalty streams</h3>
+
+<p>Derivatives (models/CTV/A) share revenue with upstream <strong>nDATA-R</strong> owners per lineage and Shapley weights $ \phi_i(X) $; auditors sample lineage for correctness; disputes use zk proofs of ALR scope.</p>
+
+<hr />
+
+<h2 id="11-token-supply--emissions-token">11. Token Supply &amp; Emissions (token)</h2>
+
+<ul>
+  <li><strong>Genesis:</strong> 1.00B $NEURO (illustrative).</li>
+  <li><strong>Allocation:</strong> 15% contributors (4y), 15% treasury, 10% ecosystem grants, 10% market-making (18m), <strong>35% operator/evaluator/data emissions</strong> over 10y, 15% public/partners.</li>
+  <li><strong>Decay:</strong> $ E_t = E_0 \cdot 2^{-t/H} $ with half-life $ H=24 $ months; configure a floor for long-run incentives.</li>
+  <li><strong>Burns:</strong> fraction of verification fees and premium SLO mark-ups burned; inactivity slashing burned.</li>
+  <li><strong>cCOMP:</strong> non-inflationary credit minted from attested on-robot time; floats vs $NEURO in a utilisation-aware AMM.</li>
+</ul>
+
+<hr />
+
+<h2 id="12-revenue-model-protocol-operators-data-owners">12. Revenue Model (protocol, operators, data owners)</h2>
+
+<h3 id="121-protocol-inflows">12.1 Protocol inflows</h3>
+
+<ul>
+  <li>Base fees (τ to treasury).</li>
+  <li>Verification fees (share to evaluators + burn).</li>
+  <li>AMM spreads (cCOMP↔$NEURO).</li>
+  <li>RWA fees (listing/attestation/oracle).</li>
+  <li><strong>Data fees:</strong> treasury share $ \tau_D $ from <strong>nDATA-R</strong> licences.</li>
+  <li>Buyback/burn policies configurable by governance.</li>
+</ul>
+
+<h3 id="122-operator-economics-per-robotday-illustrative">12.2 Operator economics (per robot/day; illustrative)</h3>
+
+<p>\(\mathrm{Rev}_{\mathrm{day}} \approx h \cdot (r_{\mathrm{clk}} P_c) \;+\; h \cdot \phi_v \;+\; \mathrm{royalty}_{\mathrm{CTV/A}} \;+\; L_{\mathrm{nDATA\!-\!R}},\)
+where $ h $ verified hours, $ r_{\mathrm{clk}} $ credits/hour, $ P_c $ cCOMP price, $ \phi_v $ verification fee intensity, and $ L_{\mathrm{nDATA!-!R}} $ data licensing revenue.<br />
+Costs: energy $ C_e $, maintenance $ C_m $, insurance $ C_i $, verification burns $ C_v $, amortised capex $ C_a $.</p>
+
+<h3 id="123-projections-directional-adjustable">12.3 Projections (directional, adjustable)</h3>
+
+<ul>
+  <li><strong>N (robots):</strong> 1,200 → 3,600 → 9,000 (Y1→Y3).</li>
+  <li><strong>h (hours/day):</strong> 6.2 → 7.0 → 8.1.</li>
+  <li><strong>$r_{\mathrm{clk}}$ (credits/h):</strong> 1,050 → 1,250 → 1,480.</li>
+  <li><strong>$P_c$ ($NEURO/credit):</strong> 0.0030 → 0.0036 → 0.0042.</li>
+  <li><strong>$ \phi_v $ ($NEURO/h):</strong> 0.15 → 0.12 → 0.10.</li>
+  <li><strong>Data licensing:</strong> 20 → 28 licensable lots/robot/day; average price 0.04 → 0.06 $NEURO; take-rate 35% → 45%.</li>
+</ul>
+
+<p><strong>Fleet Y1 gross (ballpark):</strong><br />
+\(1{,}200 \times \bigl[6.2(1{,}050\cdot0.0030) + 6.2\cdot0.15 + 6.2\cdot0.02 + 0.28\bigr] \approx 1{,}200 \times 20.86 \approx 25{,}032\ \text{$NEURO/day$}.\)
+Treasury slice (assume 15% of a 25% fee base plus $ \tau_D=15\% $ on data fees) ≈ <strong>~1.0k $NEURO/day</strong>. Upside scales with $N$, $r_{\mathrm{clk}}$, premium SLOs, and data rarity premia.</p>
+
+<p><strong>Sensitivity:</strong></p>
+<ul>
+  <li>$ \psi \uparrow \Rightarrow \chi \uparrow \Rightarrow $ throughput drops → raise prices or improve evaluators/zk.</li>
+  <li>Energy shocks → $ C_e \uparrow $; hedge with <strong>nENERGY</strong> windows.</li>
+  <li>Incident rate → $ C_i \uparrow $; reduce via CBC tuning, teleop policies, and safety-weighted matching.</li>
+</ul>
+
+<hr />
+
+<h2 id="13-environmental-emissions-energycoe">13. Environmental Emissions (energy/CO₂e)</h2>
+
+<p>Per-robot daily energy and CO₂e:</p>
+
+<p>\(E_{\mathrm{day}} = P_{\mathrm{dev}} \cdot h,\qquad
+\mathrm{CO2e}_{\mathrm{day}} = E_{\mathrm{day}} \cdot \kappa_{\mathrm{CO2}}.\)
+<strong>Example:</strong> $P_{\mathrm{dev}}=0.45\ \mathrm{kW},\, h=6.2,\, \kappa_{\mathrm{CO2}}=0.30\ \mathrm{kg/kWh} \Rightarrow E=2.79\ \mathrm{kWh},\ \mathrm{CO2e}=0.84\ \mathrm{kg}$ per robot/day.<br />
+Shifting ≥50% hours to renewable windows ($\kappa_{\mathrm{CO2}}\approx0.05$) via <strong>nENERGY</strong> can reduce intensity by ~42%.</p>
+
+<hr />
+
+<h2 id="14-comparative-analysis-bittensor-style-networks-and-others">14. Comparative Analysis (Bittensor-style networks and others)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th><strong>NeuroMesh</strong> (humanoid, on-robot)</th>
+      <th>Bittensor-style (disembodied models)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Output</td>
+      <td><strong>CTV/A</strong> (thoughts + <strong>actions</strong>) with <strong>PoA</strong></td>
+      <td>Text/image responses, gradients</td>
+    </tr>
+    <tr>
+      <td>Compute</td>
+      <td><strong>On-robot</strong> (edge); $L_{\mathrm{net}}\approx 0$ for control</td>
+      <td>Remote miners; network latency tolerable</td>
+    </tr>
+    <tr>
+      <td>Safety</td>
+      <td><strong>CBC</strong>, human-aware envelopes, teleop policy</td>
+      <td>Not centred on embodied safety</td>
+    </tr>
+    <tr>
+      <td>Verification</td>
+      <td>PoI + <strong>PoA</strong>; optional zkML</td>
+      <td>Peer scoring/bounties</td>
+    </tr>
+    <tr>
+      <td>RWA</td>
+      <td><strong>nROBOT, nENERGY, nSTOR, nDATA, nDATA-R</strong></td>
+      <td>RWA optional</td>
+    </tr>
+    <tr>
+      <td>Data ownership</td>
+      <td><strong>Per-robot nDATA-R (DOC/PLID), ALR-scoped licensing &amp; royalties</strong></td>
+      <td>Mixed, less formalised lineage/rights</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Conclusion:</strong> knowledge markets vs capability markets. NeuroMesh prices <strong>capability under constraints</strong> and makes <strong>data ownership</strong> a tradable, enforceable RWA.</p>
+
+<hr />
+
+<h2 id="15-governance-policy-and-assurance">15. Governance, Policy, and Assurance</h2>
+
+<ul>
+  <li><strong>Weight:</strong> $ W_i = \omega_1 \mathrm{stake}_i + \omega_2 \hat{r}_i + \omega_3 (p_i/\bar{p}) + \omega_4 \mathrm{agent_contrib}_i + \omega_5 \mathrm{safety_score}_i + \omega_6 \mathrm{data_contrib}_i $.</li>
+  <li><strong>Parameters:</strong> $ \psi^*, q_{\min}, \theta $; haircuts $ h_r $; caps; redemption windows; ALR defaults; $ \varepsilon_s $; data privacy reserve %.</li>
+  <li><strong>Transparency:</strong> publish parameter files, receipts/audits (hashes), incident post-mortems with remediation.</li>
+  <li><strong>Security:</strong> secure boot, sign-only OTA, TEE attestations; oracle medianisation with dispersion caps; circuit-breakers; slashing for misreporting.</li>
+</ul>
+
+<hr />
+
+<h2 id="16-roadmap-humanoid--and-data-aware">16. Roadmap (humanoid- and data-aware)</h2>
+
+<ul>
+  <li><strong>0–6 months:</strong> NeuroOS-H GA; PoI/PoA committees; on-robot cCOMP minting; <strong>DOC/PLID</strong>, <strong>nDATA-R</strong> lots; ALR lanes; receipts explorer.</li>
+  <li><strong>6–12 months:</strong> Data market beta (μToken lots); ΔI oracles; Shapley service; maintenance oracles; teleop pools; utilisation-aware pricing.</li>
+  <li><strong>12–18 months:</strong> Royalty streaming for CTV/A; zkML queues (sensitive domains); premium SLOs; insurer-grade audit packs.</li>
+  <li><strong>18–24 months:</strong> Regional clusters; cross-market routing; nDATA-R and nROBOT refinancing lanes; RWA basket indices.</li>
+  <li><strong>24–36 months:</strong> Export-aware data bundles; expanded social-policy libraries; marketplace analytics and credit curves.</li>
+</ul>
+
+<hr />
+
+<h2 id="17-risks-limitations-and-open-questions">17. Risks, Limitations, and Open Questions</h2>
+
+<ul>
+  <li><strong>zkML proof costs</strong> (large circuits). Mitigation: selective zk in high-stakes queues.</li>
+  <li><strong>Sim-to-real drift.</strong> Mitigation: μToken diversity; evaluator ensembles; periodic ground-truthing.</li>
+  <li><strong>HRI risk.</strong> Mitigation: CBC envelopes, teleop triggers, safety class certification.</li>
+  <li><strong>Regulatory heterogeneity.</strong> Mitigation: ALR defaults by region; auditor packs.</li>
+  <li><strong>Economic cyclicality.</strong> Mitigation: haircuts, issuance caps, circuit breakers, reserves.</li>
+  <li><strong>Fair ΔI estimation.</strong> Ongoing research: robust surrogates and dispute resolution.</li>
+</ul>
+
+<hr />
+
+<h2 id="18-conclusion">18. Conclusion</h2>
+
+<p>NeuroMesh is an <strong>intelligence layer</strong> for <strong>fully customisable humanoids</strong> that scales into a <strong>decentralised superbrain</strong> as robots perceive the world. It treats compute, capability, and—decisively—<strong>data</strong> as assets with <strong>ownership, rights, valuation, and rewards</strong>. By enforcing correctness and safety on-device, and settling rights and revenues on-chain, the network compounds like a living organism: every safe, attested minute deepens memory, broadens skill, and strengthens the economy.</p>
+
+<hr />
+
+<h2 id="appendix-a--key-equations">Appendix A — Key Equations</h2>
+
+<ol>
+  <li><strong>PoI quorum</strong>
+\(q \ge \frac{\ln(1/\varepsilon)}{2(1/2-\theta)^2}.\)</li>
+  <li><strong>Overhead</strong>
+\(\chi = \frac{\psi}{1-\psi}, \qquad S = S_{\mathrm{comp},R}\bigl(1+\chi\bigr) + S_{\mathrm{body}}.\)</li>
+  <li><strong>Queueing</strong>
+\(W \approx \frac{\rho_R}{\mu_R-\lambda_R}, \qquad \mu_R = \frac{1}{\mathbb{E}[S_{\mathrm{comp},R}]}.\)</li>
+  <li><strong>CBC</strong>
+\(\frac{\partial h}{\partial x} \cdot (f + g u) + \alpha h(x) \ge 0.\)</li>
+  <li><strong>Intelligence density</strong>
+\(I = \log N \cdot \bar{\beta} \cdot C.\)</li>
+  <li><strong>Throughput</strong>
+\(V_{\mathrm{emb}} \propto I \times \mathcal{U}_R \times \bigl(1 - P_{\mathrm{unsafe}}\bigr).\)</li>
+  <li><strong>DP composition</strong>
+\(\varepsilon_{\mathrm{total}} \le \sqrt{2T\ln(1/\delta)}\,\bar{\varepsilon} + T\,\bar{\varepsilon}\,\bigl(e^{\bar{\varepsilon}}-1\bigr).\)</li>
+  <li><strong>Data price</strong>
+\(P(D) = \alpha \,\mathbb{E}[\Delta I] + \beta \,\kappa_{\mathrm{cov}} + \gamma \,\rho_{\mathrm{rare}} - \lambda_{\mathrm{risk}}\,\mathcal{R}.\)</li>
+  <li><strong>Emissions</strong>
+\(E_{\mathrm{day}} = P_{\mathrm{dev}} h, \qquad \mathrm{CO2e} = E_{\mathrm{day}} \kappa_{\mathrm{CO2}}.\)</li>
+  <li><strong>Emissions (token)</strong>
+\(E_t = E_0 \cdot 2^{-t/H} \quad \text{(10-year pool)}.\)</li>
+</ol>
+
+<hr />
+
+<h2 id="appendix-b--worked-scenarios-brief">Appendix B — Worked Scenarios (brief)</h2>
+
+<ul>
+  <li><strong>Retail front-of-house:</strong> wayfinding, safe handovers; dialogue PoA; ALR excludes face ID; CTV/A reused by other venues (royalties).</li>
+  <li><strong>Micro-fulfilment:</strong> deformables bin-picking with tactile slip recovery; night learning in <strong>nENERGY</strong> windows; nDATA-R lots priced by rarity of materials.</li>
+  <li><strong>Industrial inspection:</strong> valve torque envelopes; evaluator ensembles; maintenance oracles update risk; insurance priced off PoA history.</li>
+  <li><strong>Event logistics:</strong> lift–carry with human proximity envelopes; teleop overrides logged; Shapley splits across perception/planning/control.</li>
+</ul>
+
+<hr />
+
+<h2 id="appendix-c--governance-surfaces-suggested-defaults">Appendix C — Governance Surfaces (suggested defaults)</h2>
+
+<ul>
+  <li>
+    <p>$ \psi^* \in [0.10,0.18] $, $ q_{\min} \in [7,11] $, $ \theta \in [0.60,0.67] $.</p>
+  </li>
+  <li>Safety cap $ \varepsilon_s \in [10^{-4},10^{-3}] $ per episode depending on class.</li>
+  <li>Haircuts $ h_r $: nDATA-R 20–40% (jurisdiction and variance dependent), nROBOT 10–25%, nENERGY 5–15%, nSTOR 5–10%.</li>
+  <li>Privacy reserve: 5–10% of data fees to fund redaction/cleanup after policy changes.</li>
+</ul>
+
+<hr />
+
+<h2 id="appendix-d--practical-integration-notes">Appendix D — Practical Integration Notes</h2>
+
+<ul>
+  <li><strong>Install intelligence layer:</strong> NeuroOS-H, choose pre-audited skills, set CBC envelopes; enable receipts by default.</li>
+  <li><strong>Tokenise data:</strong> turn on <strong>DOC/PLID</strong> generation; configure ALR defaults; mint <strong>nDATA-R</strong> lots by time window/site.</li>
+  <li><strong>Operate to earn:</strong> schedule jobs, align heavy learning with <strong>nENERGY</strong> windows, list μToken lots; monitor dashboards for $ \rho_R, \psi, P_{\mathrm{unsafe}} $, evaluator accuracy, reuse ratios, ΔI leaders.</li>
+  <li><strong>Evolve:</strong> adopt new evaluator ensembles, enable zk for premium queues; expand royalty participation through iCTVs and nDATA-R tranches.</li>
+</ul>
+
+<hr />
+
+<p><em>End of document.</em></p>
+
+        </article>
+      </main>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const content = document.getElementById('doc-content');
+        const toc = document.getElementById('toc');
+        if (!content || !toc) {
+          return;
+        }
+
+        const headings = Array.from(content.querySelectorAll('h1, h2, h3'));
+        if (!headings.length) {
+          return;
+        }
+
+        const slugify = (text) =>
+          text
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-');
+
+        const list = document.createElement('ul');
+        list.className = 'toc-list';
+
+        headings.forEach((heading) => {
+          if (!heading.id) {
+            heading.id = slugify(heading.textContent);
+          }
+
+          const item = document.createElement('li');
+          item.className = `toc-item level-${heading.tagName.toLowerCase()}`;
+
+          const link = document.createElement('a');
+          link.href = `#${heading.id}`;
+          link.textContent = heading.textContent;
+
+          item.appendChild(link);
+          list.appendChild(item);
+        });
+
+        toc.innerHTML = '';
+        toc.appendChild(list);
+      });
+    </script>
+  </body>
+</html>

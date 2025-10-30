@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        },
+        options: {
+          renderActions: {
+            addMenu: []
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+        <nav id="toc" class="toc">
+          <p class="toc-empty">This page has no headings yet.</p>
+        </nav>
+      </aside>
+      <main class="content">
+        <article id="doc-content">
+          {{ content }}
+        </article>
+      </main>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const content = document.getElementById('doc-content');
+        const toc = document.getElementById('toc');
+        if (!content || !toc) {
+          return;
+        }
+
+        const headings = Array.from(content.querySelectorAll('h1, h2, h3'));
+        if (!headings.length) {
+          return;
+        }
+
+        const slugify = (text) =>
+          text
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-');
+
+        const list = document.createElement('ul');
+        list.className = 'toc-list';
+
+        headings.forEach((heading) => {
+          if (!heading.id) {
+            heading.id = slugify(heading.textContent);
+          }
+
+          const item = document.createElement('li');
+          item.className = `toc-item level-${heading.tagName.toLowerCase()}`;
+
+          const link = document.createElement('a');
+          link.href = `#${heading.id}`;
+          link.textContent = heading.textContent;
+
+          item.appendChild(link);
+          list.appendChild(item);
+        });
+
+        toc.innerHTML = '';
+        toc.appendChild(list);
+      });
+    </script>
+  </body>
+</html>
